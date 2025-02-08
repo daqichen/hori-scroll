@@ -1,0 +1,71 @@
+:root {
+  font-family: Arial, Helvetica, sans-serif;
+  --horiscroll-padding: 1rem 2em;
+  --horiscroll-margin: 0.5rem 1rem;
+  --base-color: 350;
+  /* --clr-neutral-100: hsl(var(--base-color), 0%, 100%); */
+  /* --clr-primary-100: color-mix(in srgb, rebeccapurple 30%, transparent); */
+  /* hsl(var(--base-color), 100%, 50%); */
+  --horiscroll-li-button-surface: hsl(253, 36%, 42%);
+  --horiscroll-li-button-text: white;
+}
+
+.horiscroll-animation-container {
+  /* margin-inline: 0; */
+  white-space: nowrap;
+  overflow: auto;
+  max-width: 90vw;
+  width: 100%;
+  scrollbar-width: none;
+  display: flex;
+  outline: 1px red solid;
+}
+
+.horiscroll-animation-container::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
+.horiscroll-inner-list {
+  /* width: 120%; */
+  margin: 0;
+  padding-inline: 0;
+  list-style: none;
+  display: flex;
+  flex: 0 0 100%;
+  /* min-width: max(100vw, fit-content); */
+  /* width: 200vw; */
+  /* width: inherit; */
+  justify-content: space-around;
+  /* place-content: center; */
+  /* flex-wrap: wrap; */
+}
+
+.horiscroll-inner-list li {
+  cursor: pointer;
+  margin: var(--horiscroll-margin, 0.5rem);
+  width: fit-content;
+}
+
+.horiscroll-inner-list.is-button li {
+  padding: var(--horiscroll-padding, 1rem);
+  border-radius: 0.5rem;
+  color: var(--horiscroll-li-button-text);
+  background: var(--horiscroll-li-button-surface);
+  /* box-shadow: 0 0.15rem 0.5rem -0.05rem var(--clr-primary-900); */
+}
+
+.horiscroll-inner-list.is-button li:hover {
+  /* background-color: rgba(255, 255, 255, 0.05); */
+  opacity: 0.8;
+  filter: alpha(opacity=80);
+}
+
+@keyframes horiscroll-animate {
+  0% {
+    left: 100%;
+  }
+
+  100% {
+    left: -100%;
+  }
+}
