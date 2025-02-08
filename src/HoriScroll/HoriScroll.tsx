@@ -7,6 +7,8 @@ import {
   useEffect,
   useMemo,
   useRef,
+  // https://react.dev/reference/react/useImperativeHandle
+  useImperativeHandle,
 } from 'react';
 import './HoriScroll.css';
 import { applyInitAnimation } from './animate';
@@ -67,7 +69,20 @@ const HoriScroll: HoriScroll.Type = forwardRef<
     const { options, onClick, isClickable, className, ...baseProps } =
       props as HoriScroll.PropsWithOptions<TValue>;
 
-    const horiscrollRef = useRef<HTMLDivElement | null>(null);
+    const horiscrollRef = useRef<HTMLDivElement>(null);
+
+    /**
+    To access a ref while also forwarding it:
+
+    Attach a ref created inside the component to the element
+    Call the useImperativeHandle hook on the outer ref (which is being forwarded to) and pass a function that returns the current property of the inner ref, which is the value that will be set to the current property of the outer ref
+
+    @param of useImperativeHandle Hook:
+
+    ref: The ref you received as a prop to the MyInput component.
+
+    createHandle: A function that takes no arguments and returns the ref handle you want to expose. That ref handle can have any type. Usually, you will return an object with the methods you want to expose. */
+    useImperativeHandle(ref, () => horiscrollRef.current!, []);
 
     useEffect(() => applyInitAnimation(horiscrollRef?.current), []);
 
@@ -127,14 +142,21 @@ const HoriScroll: HoriScroll.Type = forwardRef<
       <div
         className={'horiscroll-animation-container ' + className}
         {...baseProps}
-        ref={(ele) => {
-          horiscrollRef.current = ele;
-          if (typeof ref === 'function') {
-            ref(ele);
-          } else if (ref) {
-            ref.current = ele;
-          }
-        }}
+        ref={
+          horiscrollRef
+          //   (ele) => {
+          //   /**
+          //       * The reason it works is that the ref prop accepts a callback, so you can execute whatever code you like when it triggers. Here, we're setting both the ref value (which we said can be a function, thus the if / else) and our innerRef.
+          //       https://stackoverflow.com/a/76490038/27329422
+          //       */
+          //   horiscrollRef.current = ele;
+          //   if (typeof ref === 'function') {
+          //     ref(ele);
+          //   } else if (ref) {
+          //     ref.current = ele;
+          //   }
+          // }
+        }
       >
         {options
           ? renderOptions
