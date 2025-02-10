@@ -1,6 +1,6 @@
 {
   "name": "hori-scroll",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "exports": {
     ".": {
@@ -54,6 +54,5 @@
   "peerDependencies": {
     "react": ">=16.9.0",
     "react-dom": ">=16.9.0"
-  },
-  "private": true
+  }
 }
