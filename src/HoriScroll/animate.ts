@@ -1,48 +1,57 @@
-export const animate = (scroller: Element, scrollerScrollWidth: number) => {
+export const ANIMATION_SPEED_DICT = {
+  FAST: 1.5,
+  MEDIUM: 1,
+  SLOW: 0.75,
+} as const;
+
+export type ANIMATION_SPEED_TYPE = keyof typeof ANIMATION_SPEED_DICT;
+
+type ANIMATION_SPEED = (typeof ANIMATION_SPEED_DICT)[ANIMATION_SPEED_TYPE];
+
+export const animate = (
+  scroller: Element,
+  scrollerScrollWidth: number,
+  speed: ANIMATION_SPEED,
+) => {
   if (scroller.scrollLeft !== scrollerScrollWidth) {
-    return scroller.scrollTo(scroller.scrollLeft + 1, 0);
+    return scroller.scrollTo(scroller.scrollLeft + speed, 0);
   }
+  // console.log('edge');
 };
 
-export const applyInitAnimation = (scroller: HTMLDivElement | null) => {
-  // const scrollers = document.querySelectorAll(
-  //   '.horiscroll-animation-container',
-  // );
-  // scrollers.forEach((scroller) => {
-  //
+export const applyInitAnimation = (
+  scroller: HTMLDivElement | null,
+  animationSpeed: ANIMATION_SPEED,
+) => {
   if (!scroller) return;
-  // auto scrolling
   const scrollerScrollWidth = scroller.scrollWidth;
-  console.log(scroller.scrollWidth, scroller.scrollLeft);
+  const threshold = 1;
 
   let interval = setInterval(() => {
-    animate(scroller, scrollerScrollWidth);
+    animate(scroller, scrollerScrollWidth, animationSpeed);
   }, 25);
 
+  scroller.scrollTo(threshold + 1, 0);
+
+  const trueHalfway = scroller.clientWidth - threshold;
   // trigger for infinite scroll
   scroller.addEventListener('scroll', () => {
-    const halfway = scroller.scrollWidth / 2 - 1;
-    if (scroller.scrollLeft > halfway) {
-      return scroller.scrollTo(scroller.scrollLeft - halfway, 0);
-    }
-
-    // make reverse also infinitely scrollable
-    if (scroller.scrollLeft < 0) {
-      console.log('here in scroll handler!', scroller.scrollLeft);
-      return scroller.scrollTo(scroller.scrollLeft + halfway, 0);
+    if (scroller.scrollLeft > trueHalfway) {
+      return scroller.scrollTo(
+        scroller.scrollLeft - trueHalfway + threshold,
+        0,
+      );
+    } else if (scroller.scrollLeft < threshold) {
+      return scroller.scrollTo(scroller.scrollLeft + trueHalfway, 0);
     }
   });
+
   // triggers to pause and continue with animation
   scroller.addEventListener('mouseleave', () => {
     interval = setInterval(() => {
-      animate(scroller, scrollerScrollWidth);
+      animate(scroller, scrollerScrollWidth, animationSpeed);
     }, 25);
   });
-  // scroller.addEventListener('load', () => {
-  //   interval = setInterval(() => {
-  //     animate(scroller, scrollerScrollWidth);
-  //   }, 25);
-  // });
   scroller.addEventListener('mouseover', () => {
     clearInterval(interval);
   });

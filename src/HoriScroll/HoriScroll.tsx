@@ -11,7 +11,11 @@ import {
   useImperativeHandle,
 } from 'react';
 import './HoriScroll.css';
-import { applyInitAnimation } from './animate';
+import {
+  ANIMATION_SPEED_DICT,
+  ANIMATION_SPEED_TYPE,
+  applyInitAnimation,
+} from './animate';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 namespace HoriScroll {
@@ -23,9 +27,9 @@ namespace HoriScroll {
 
   export interface PropsWithChildren<TValue>
     extends Omit<ComponentProps<'div'>, 'onClick'> {
-    // horiScrollRef?: Ref<HTMLDivElement>;
     onClick?: (value: TValue, key: Key) => void;
     isClickable?: boolean;
+    animationSpeed?: ANIMATION_SPEED_TYPE;
   }
 
   export interface PropsWithOptions<TValue>
@@ -66,8 +70,14 @@ const HoriScroll: HoriScroll.Type = forwardRef<
       | HoriScroll.PropsWithOptions<TValue>,
     ref?: Ref<HTMLDivElement>,
   ) => {
-    const { options, onClick, isClickable, className, ...baseProps } =
-      props as HoriScroll.PropsWithOptions<TValue>;
+    const {
+      options,
+      onClick,
+      isClickable = false,
+      animationSpeed = 'MEDIUM',
+      className,
+      ...baseProps
+    } = props as HoriScroll.PropsWithOptions<TValue>;
 
     const horiscrollRef = useRef<HTMLDivElement>(null);
 
@@ -77,6 +87,8 @@ const HoriScroll: HoriScroll.Type = forwardRef<
     Attach a ref created inside the component to the element
     Call the useImperativeHandle hook on the outer ref (which is being forwarded to) and pass a function that returns the current property of the inner ref, which is the value that will be set to the current property of the outer ref
 
+    read more at https://stackoverflow.com/a/77055329/27329422
+
     @param of useImperativeHandle Hook:
 
     ref: The ref you received as a prop to the MyInput component.
@@ -84,14 +96,22 @@ const HoriScroll: HoriScroll.Type = forwardRef<
     createHandle: A function that takes no arguments and returns the ref handle you want to expose. That ref handle can have any type. Usually, you will return an object with the methods you want to expose. */
     useImperativeHandle(ref, () => horiscrollRef.current!, []);
 
-    useEffect(() => applyInitAnimation(horiscrollRef?.current), []);
+    useEffect(
+      () =>
+        applyInitAnimation(
+          horiscrollRef?.current,
+          ANIMATION_SPEED_DICT[animationSpeed],
+        ),
+      [],
+    );
 
     const renderOptions = useMemo(
       () => (
         <>
           <ul
             className={
-              'horiscroll-inner-list ' + (isClickable ? 'is-button' : '')
+              'horiscroll-inner-list ' +
+              (isClickable ? 'is-button with-entering-animation' : '')
             }
           >
             {options?.map((option, ind) => {
@@ -104,7 +124,9 @@ const HoriScroll: HoriScroll.Type = forwardRef<
                   id={`hori__scroll__id__${ind}`}
                   key={`hori__scroll__key__${key}`}
                   aria-label={value as string}
-                  onClick={() => onClick && onClick(value as TValue, key)}
+                  onClick={() =>
+                    isClickable && onClick && onClick(value as TValue, key)
+                  }
                 >
                   {value as string}
                 </li>
@@ -113,7 +135,8 @@ const HoriScroll: HoriScroll.Type = forwardRef<
           </ul>
           <ul
             className={
-              'horiscroll-inner-list ' + (isClickable ? 'is-button' : '')
+              'horiscroll-inner-list ' +
+              (isClickable ? 'is-button with-entering-animation' : '')
             }
           >
             {options?.map((option, ind) => {
@@ -126,7 +149,9 @@ const HoriScroll: HoriScroll.Type = forwardRef<
                   id={`hori__scroll__id__${ind}-copy`}
                   key={`hori__scroll__key__${key}-copy`}
                   aria-label={value as string}
-                  onClick={() => onClick && onClick(value as TValue, key)}
+                  onClick={() =>
+                    isClickable && onClick && onClick(value as TValue, key)
+                  }
                 >
                   {value as string}
                 </li>

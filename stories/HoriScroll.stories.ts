@@ -11,7 +11,7 @@ const meta = {
     layout: 'centered',
   },
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
-  // tags: ['autodocs'],
+  tags: ['autodocs'],
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {
     options: { control: 'object' },
@@ -32,35 +32,49 @@ export const Primary: Story = {
   play: ({ canvasElement }) => playFn(canvasElement, '1'),
 };
 
-export const OptionsArray: Story = {
+export const ClickableButtons: Story = {
   args: {
     options: ['hello', 'hi'],
     isClickable: true,
   },
   play: ({ canvasElement }) => playFn(canvasElement, 'hello'),
-  tags: ['autodocs'],
 };
 
-export const CustomKey: Story = {
+export const ClickableButtonsCustomKey: Story = {
   args: {
     options: [
-      { value: 'Option 1', key: '10' },
-      { value: 'Option 2', key: '20' },
+      { value: 'Option 1 with key 10', key: '10' },
+      { value: 'Option 2 with key 20', key: '20' },
       {
-        value: 'Option 3',
+        value: 'Option 3 with key 30',
         key: '30',
       },
     ],
+    isClickable: true,
   },
   play: ({ canvasElement }) => playFn(canvasElement, 'Option 1'),
-  tags: ['autodocs'],
+};
+
+export const FastAnimationSpeedVariant: Story = {
+  args: {
+    options: ['This', 'is', 'faster'],
+    isClickable: true,
+    animationSpeed: 'FAST',
+  },
+  play: ({ canvasElement }) => playFn(canvasElement, 'faster'),
+};
+
+export const SlowAnimationSpeedVariant: Story = {
+  args: {
+    options: ['This', 'is', 'slower'],
+    isClickable: true,
+    animationSpeed: 'SLOW',
+  },
+  play: ({ canvasElement }) => playFn(canvasElement, 'slower'),
 };
 
 const playFn = async (canvasElement: HTMLElement, match: string) => {
   const canvas = within(canvasElement);
   const listItem = canvas.getAllByText(match)[0] as HTMLElement;
-  // const listItem = canvas.getByRole('listitem', {
-  //   name: match,
-  // });
   await userEvent.click(listItem);
 };

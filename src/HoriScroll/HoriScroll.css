@@ -18,7 +18,7 @@
   width: 100%;
   scrollbar-width: none;
   display: flex;
-  outline: 1px red solid;
+  /* outline: 1px red solid; */
 }
 
 .horiscroll-animation-container::-webkit-scrollbar {
@@ -26,27 +26,23 @@
 }
 
 .horiscroll-inner-list {
-  /* width: 120%; */
   margin: 0;
   padding-inline: 0;
   list-style: none;
   display: flex;
   flex: 0 0 100%;
-  /* min-width: max(100vw, fit-content); */
-  /* width: 200vw; */
-  /* width: inherit; */
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
   justify-content: space-around;
-  /* place-content: center; */
-  /* flex-wrap: wrap; */
 }
 
 .horiscroll-inner-list li {
-  cursor: pointer;
   margin: var(--horiscroll-margin, 0.5rem);
   width: fit-content;
 }
 
 .horiscroll-inner-list.is-button li {
+  cursor: pointer;
   padding: var(--horiscroll-padding, 1rem);
   border-radius: 0.5rem;
   color: var(--horiscroll-li-button-text);
@@ -68,4 +64,27 @@
   100% {
     left: -100%;
   }
+}
+
+@keyframes entering {
+  from {
+    opacity: 0;
+    /* transform: translateX(20px); */
+    scale: 0.8;
+  }
+  to {
+    opacity: 1;
+    /* transform: translateX(0px); */
+    scale: 1;
+  }
+}
+
+.horiscroll-inner-list.with-entering-animation li {
+  animation: entering linear both;
+  animation-timeline: view(inline auto);
+  animation-range: entry cover 10%;
+}
+
+.horiscroll-animation-container.with-mask {
+  mask: linear-gradient(90deg, transparent, white 10%, white 90%, transparent);
 }
