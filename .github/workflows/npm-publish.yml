@@ -19,7 +19,7 @@ jobs:
         run: |
           npm ci --legacy-peer-deps
           npm run build
-          npm version --allow-same-version
+          npm version patch
           npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
