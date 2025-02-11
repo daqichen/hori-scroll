@@ -16,7 +16,6 @@ export const animate = (
   if (scroller.scrollLeft !== scrollerScrollWidth) {
     return scroller.scrollTo(scroller.scrollLeft + speed, 0);
   }
-  // console.log('edge');
 };
 
 export const applyInitAnimation = (
@@ -25,25 +24,28 @@ export const applyInitAnimation = (
 ) => {
   if (!scroller) return;
   const scrollerScrollWidth = scroller.scrollWidth;
-  const threshold = 1;
+  // const threshold = 0.5;
 
   let interval = setInterval(() => {
     animate(scroller, scrollerScrollWidth, animationSpeed);
   }, 25);
 
-  scroller.scrollTo(threshold + 1, 0);
+  // scroller.scrollTo(threshold + 1, 0);
 
-  const trueHalfway = scroller.clientWidth - threshold;
-  // trigger for infinite scroll
+  // const trueHalfway = scroller.clientWidth - threshold;
+  const trueHalfway = scrollerScrollWidth / 2 - 1;
+
   scroller.addEventListener('scroll', () => {
     if (scroller.scrollLeft > trueHalfway) {
       return scroller.scrollTo(
-        scroller.scrollLeft - trueHalfway + threshold,
+        // scroller.scrollLeft - trueHalfway + threshold,
+        scroller.scrollLeft - trueHalfway,
         0,
       );
-    } else if (scroller.scrollLeft < threshold) {
-      return scroller.scrollTo(scroller.scrollLeft + trueHalfway, 0);
     }
+    // else if (scroller.scrollLeft < threshold) {
+    //   return scroller.scrollTo(scroller.scrollLeft + trueHalfway, 0);
+    // }
   });
 
   // triggers to pause and continue with animation

@@ -52,7 +52,7 @@ export const ClickableButtonsCustomKey: Story = {
     ],
     isClickable: true,
   },
-  play: ({ canvasElement }) => playFn(canvasElement, 'Option 1'),
+  play: ({ canvasElement }) => playFn(canvasElement, 'Option 1 with key 10'),
 };
 
 export const FastAnimationSpeedVariant: Story = {

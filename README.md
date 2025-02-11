@@ -1,19 +1,23 @@
 # `hori-scroll`
-A framework-agnostic UI component for an infinite scroll effect
+
+endless, animated horizontal scrolling
+
 ### [View Demo on CodeSandbox.io](https://codesandbox.io/p/devbox/boring-star-jkz2yj)
 
 Built using Rslib.
 
-Unlike a pure `CSS`-driven scroll solution, the horizontal scroll in this library is driven by `JS` and therefore allows for user interference and upon user's cursor leaving the container, the scrolling animation continues infinitely. 
+Unlike a pure `CSS`-driven scroll solution, the horizontal scroll in this library is driven by `JS` and therefore allows for user interference and upon user's cursor leaving the container, the scrolling animation continues infinitely.
 
-The idea was inspired by Perplexity's prompts library and Instagram's search suggestions, both of which scroll endlessly while allowing user to interact with the scroll if they wish. 
+The idea was inspired by Perplexity's prompts library and Instagram's search suggestions, both of which scroll endlessly while allowing user to interact with the scroll if they wish.
 
-To install: 
+
+## Installation
+
 ```bash
 npm i hori-scroll
 ```
 
-To use:
+## Usage
 
 ```js
 import { HoriScroll } from "hori-scroll";
@@ -41,16 +45,13 @@ import { HoriScroll } from "hori-scroll";
 ...
 ```
 
-
-## Setup
+## Local Dev Setup
 
 Install the dependencies:
 
 ```bash
 pnpm install
 ```
-
-## Get Started
 
 Build the library:
 
@@ -63,3 +64,7 @@ Build the library in watch mode:
 ```bash
 pnpm dev
 ```
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
