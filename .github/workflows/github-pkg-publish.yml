@@ -18,7 +18,7 @@ jobs:
           # Defaults to the user or organization that owns the workflow file
           scope: '@octocat'
       - run: |
-          npm ci
+          npm ci --legacy-peer-deps
           npm run build
           npm version --allow-same-version
           npm publish --provenance --access public
