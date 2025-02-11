@@ -3,7 +3,7 @@ on:
   release:
     types: [published]
 jobs:
-  build:
+  github-publish:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -17,7 +17,8 @@ jobs:
           registry-url: 'https://npm.pkg.github.com'
           # Defaults to the user or organization that owns the workflow file
           scope: '@octocat'
-      - run: |
+      - name: 'Publish to github pkg'
+        run: |
           npm ci --legacy-peer-deps
           npm run build
           npm version --allow-same-version
