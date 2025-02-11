@@ -19,6 +19,7 @@ jobs:
         run: |
           npm ci --legacy-peer-deps
           npm run build
+          git config --global user.email "daqichen@alumni.unc.edu" && git config --global user.name "daqichen"
           npm version patch
           npm publish --provenance --access public
         env:
