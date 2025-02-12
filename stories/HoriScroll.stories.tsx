@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn, userEvent, within } from '@storybook/test';
 import { HoriScroll } from '../src/HoriScroll/HoriScroll';
+import React from 'react';
+import './HoriScroll.stories.css';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -16,6 +18,11 @@ const meta = {
   argTypes: {
     options: { control: 'object' },
     onClick: { action: 'clicked', control: false }, //{ type: 'function', control: false }
+    animationSpeed: { control: 'select', options: ['SLOW', 'FAST', 'MEDIUM'] },
+    enteringAnimationType: {
+      control: 'select',
+      options: ['none', 'scale', 'translate-up', 'translate-down'],
+    },
   },
   // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
   args: { onClick: fn() },
@@ -24,15 +31,57 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Primary: Story = {
+export const PassingInChildrenPropsDemo: Story = {
+  render: () => (
+    <HoriScroll
+      animationSpeed="FAST"
+      enteringAnimationType="translate-down"
+      blurredEdges
+      className="storybook-company-logos"
+    >
+      <span>
+        <span className="material-symbols-outlined">fastfood</span>
+        &nbsp;Fastfood
+      </span>
+      <span>
+        <span className="material-symbols-outlined">ramen_dining</span>
+        &nbsp;Ramen Dining
+      </span>
+      <span>
+        <span className="material-symbols-outlined">breakfast_dining</span>
+        &nbsp;Breakfast dining
+      </span>
+      <span>
+        <span className="material-symbols-outlined">grocery</span>&nbsp;Grocery
+      </span>
+      <span>
+        <span className="material-symbols-outlined">tapas</span>&nbsp;Tapas
+      </span>
+      <span>
+        <span className="material-symbols-outlined">set_meal</span>&nbsp;Set
+        meal
+      </span>
+      <span>
+        <span className="material-symbols-outlined">local_pizza</span>
+        &nbsp;Local pizza
+      </span>
+      <span>
+        <span className="material-symbols-outlined">kebab_dining</span>
+        &nbsp;Kebab dining
+      </span>
+    </HoriScroll>
+  ),
+  play: ({ canvasElement }) => playFn(canvasElement, 'Kebab dining'),
+};
+
+export const Basic: Story = {
   args: {
     options: [1, 2, 3],
   },
   play: ({ canvasElement }) => playFn(canvasElement, '1'),
 };
 
-export const ClickableButtons: Story = {
+export const ClickableOptions: Story = {
   args: {
     options: ['hello', 'hi'],
     isClickable: true,
@@ -40,7 +89,7 @@ export const ClickableButtons: Story = {
   play: ({ canvasElement }) => playFn(canvasElement, 'hello'),
 };
 
-export const ClickableButtonsCustomKey: Story = {
+export const OptionsWithCustomKey: Story = {
   args: {
     options: [
       { value: 'Option 1 with key 10', key: '10' },
@@ -55,22 +104,15 @@ export const ClickableButtonsCustomKey: Story = {
   play: ({ canvasElement }) => playFn(canvasElement, 'Option 1 with key 10'),
 };
 
-export const FastAnimationSpeedVariant: Story = {
+export const AnimationAndBlurCustomization: Story = {
   args: {
     options: ['This', 'is', 'faster'],
     isClickable: true,
     animationSpeed: 'FAST',
+    enteringAnimationType: 'translate-up',
+    blurredEdges: true,
   },
   play: ({ canvasElement }) => playFn(canvasElement, 'faster'),
-};
-
-export const SlowAnimationSpeedVariant: Story = {
-  args: {
-    options: ['This', 'is', 'slower'],
-    isClickable: true,
-    animationSpeed: 'SLOW',
-  },
-  play: ({ canvasElement }) => playFn(canvasElement, 'slower'),
 };
 
 const playFn = async (canvasElement: HTMLElement, match: string) => {

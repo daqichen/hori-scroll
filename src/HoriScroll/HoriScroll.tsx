@@ -25,15 +25,21 @@ namespace HoriScroll {
     value: TValue;
   }
 
-  export interface PropsWithChildren<TValue>
+  export interface PropsWithChildren
     extends Omit<ComponentProps<'div'>, 'onClick'> {
-    onClick?: (value: TValue, key: Key) => void;
-    isClickable?: boolean;
     animationSpeed?: ANIMATION_SPEED_TYPE;
+    blurredEdges?: boolean;
+    enteringAnimationType?:
+      | 'none'
+      | 'scale'
+      | 'translate-up'
+      | 'translate-down';
   }
 
   export interface PropsWithOptions<TValue>
-    extends Omit<PropsWithChildren<TValue>, 'children'> {
+    extends Omit<PropsWithChildren, 'children'> {
+    onClick?: (value: TValue, key: Key) => void;
+    isClickable?: boolean;
     options?: Array<
       | (TValue & Key)
       | (ListItemProps<TValue> & {
@@ -43,10 +49,7 @@ namespace HoriScroll {
   }
 
   export interface Type {
-    <TValue>(
-      props: PropsWithChildren<TValue>,
-      ref?: Ref<HTMLDivElement>,
-    ): ReactNode;
+    (props: PropsWithChildren, ref?: Ref<HTMLDivElement>): ReactNode;
     <TValue>(
       props: PropsWithOptions<TValue>,
       ref?: Ref<HTMLDivElement>,
@@ -62,18 +65,18 @@ namespace HoriScroll {
 
 const HoriScroll: HoriScroll.Type = forwardRef<
   HTMLDivElement,
-  HoriScroll.PropsWithChildren<unknown> | HoriScroll.PropsWithOptions<unknown>
+  HoriScroll.PropsWithChildren | HoriScroll.PropsWithOptions<unknown>
 >(
   <TValue,>(
-    props:
-      | HoriScroll.PropsWithChildren<TValue>
-      | HoriScroll.PropsWithOptions<TValue>,
+    props: HoriScroll.PropsWithChildren | HoriScroll.PropsWithOptions<TValue>,
     ref?: Ref<HTMLDivElement>,
   ) => {
     const {
       options,
       onClick,
       isClickable = false,
+      blurredEdges = false,
+      enteringAnimationType = 'none',
       animationSpeed = 'MEDIUM',
       className,
       ...baseProps
@@ -105,67 +108,75 @@ const HoriScroll: HoriScroll.Type = forwardRef<
       [],
     );
 
+    // const enteringAnimationCls = () =>
+
+    const clsname = useMemo(
+      () =>
+        (isClickable ? 'is-button' : '') +
+        ((): string => {
+          switch (enteringAnimationType) {
+            case 'none':
+              return '';
+            case 'scale':
+              return ' with-scaling-entering-animation';
+            case 'translate-down':
+              return ' translate-down-entering-animation';
+            case 'translate-up':
+              return ' translate-up-entering-animation';
+            default:
+              return '';
+          }
+        })(),
+      [isClickable, blurredEdges, enteringAnimationType],
+    );
+
     const renderOptions = useMemo(
       () => (
         <>
-          <ul
-            className={
-              'horiscroll-inner-list ' +
-              (isClickable ? 'is-button with-entering-animation' : '')
-            }
-          >
-            {options?.map((option, ind) => {
-              const key =
-                (option as HoriScroll.ListItemProps<TValue>).key || ind;
-              const value =
-                (option as HoriScroll.ListItemProps<TValue>).value || option;
-              return (
-                <li
-                  id={`hori__scroll__id__${ind}`}
-                  key={`hori__scroll__key__${key}`}
-                  aria-label={value as string}
-                  onClick={() =>
-                    isClickable && onClick && onClick(value as TValue, key)
-                  }
-                >
-                  {value as string}
-                </li>
-              );
-            })}
-          </ul>
-          <ul
-            className={
-              'horiscroll-inner-list ' +
-              (isClickable ? 'is-button with-entering-animation' : '')
-            }
-          >
-            {options?.map((option, ind) => {
-              const key =
-                (option as HoriScroll.ListItemProps<TValue>).key || ind;
-              const value =
-                (option as HoriScroll.ListItemProps<TValue>).value || option;
-              return (
-                <li
-                  id={`hori__scroll__id__${ind}-copy`}
-                  key={`hori__scroll__key__${key}-copy`}
-                  aria-label={value as string}
-                  onClick={() =>
-                    isClickable && onClick && onClick(value as TValue, key)
-                  }
-                >
-                  {value as string}
-                </li>
-              );
-            })}
-          </ul>
+          {['', '-copy'].map((obj) => (
+            <ul className={'horiscroll-inner-list ' + clsname}>
+              {options?.map((option, ind) => {
+                const key =
+                  (option as HoriScroll.ListItemProps<TValue>).key || ind;
+                const value =
+                  (option as HoriScroll.ListItemProps<TValue>).value || option;
+                return (
+                  <li
+                    id={`hori__scroll__id__${ind}${obj}`}
+                    key={`hori__scroll__key__${key}${obj}`}
+                    aria-label={value as string}
+                    onClick={() =>
+                      isClickable && onClick && onClick(value as TValue, key)
+                    }
+                  >
+                    {value as string}
+                  </li>
+                );
+              })}
+            </ul>
+          ))}
         </>
       ),
       [options],
     );
 
+    const renderChildren = useMemo(
+      () =>
+        ['', '-copy'].map(() => (
+          <div className={'horiscroll-inner-list ' + clsname}>
+            {(props as HoriScroll.PropsWithChildren).children}
+          </div>
+        )),
+      [(props as HoriScroll.PropsWithChildren).children],
+    );
+
     return (
       <div
-        className={'horiscroll-animation-container ' + className}
+        className={
+          'horiscroll-animation-container ' +
+          (blurredEdges ? 'with-mask ' : '') +
+          className
+        }
         {...baseProps}
         ref={
           horiscrollRef
@@ -183,9 +194,7 @@ const HoriScroll: HoriScroll.Type = forwardRef<
           // }
         }
       >
-        {options
-          ? renderOptions
-          : (props as HoriScroll.PropsWithChildren<TValue>).children}
+        {options ? renderOptions : renderChildren}
       </div>
     );
   },
