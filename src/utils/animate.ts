@@ -1,5 +1,5 @@
 export const ANIMATION_SPEED_DICT = {
-  FAST: 1.5,
+  FAST: 1.75,
   MEDIUM: 1,
   SLOW: 0.75,
 } as const;
@@ -23,6 +23,7 @@ export const applyInitAnimation = (
   animationSpeed: ANIMATION_SPEED,
 ) => {
   if (!scroller) return;
+  // const scrollerScrollWidth = scroller.scrollWidth;
   const scrollerScrollWidth = scroller.scrollWidth;
   // const threshold = 0.5;
 
@@ -33,10 +34,12 @@ export const applyInitAnimation = (
   // scroller.scrollTo(threshold + 1, 0);
 
   // const trueHalfway = scroller.clientWidth - threshold;
-  const trueHalfway = scrollerScrollWidth / 2 - 1;
+  // const trueHalfway = scrollerScrollWidth / 2 - 1;
+  // const trueHalfway = scrollerScrollWidth - scroller.clientWidth;
+  const trueHalfway = scrollerScrollWidth / 5;
 
   scroller.addEventListener('scroll', () => {
-    if (scroller.scrollLeft > trueHalfway) {
+    if (scroller.scrollLeft >= trueHalfway) {
       return scroller.scrollTo(
         // scroller.scrollLeft - trueHalfway + threshold,
         scroller.scrollLeft - trueHalfway,

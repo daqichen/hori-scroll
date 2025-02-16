@@ -15,7 +15,9 @@ import {
   ANIMATION_SPEED_DICT,
   ANIMATION_SPEED_TYPE,
   applyInitAnimation,
-} from './animate';
+} from '../utils/animate';
+import { IconName } from '../material-icon-names';
+import { updateIconRequest } from '../utils/icons';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 namespace HoriScroll {
@@ -23,6 +25,8 @@ namespace HoriScroll {
     extends Omit<ComponentProps<'li'>, 'onClick' | 'value'> {
     onClick?: (value: TValue, key: Key) => void;
     value: TValue;
+    materialIconName?: IconName | string;
+    icon?: ReactNode;
   }
 
   export interface PropsWithChildren
@@ -34,6 +38,11 @@ namespace HoriScroll {
       | 'scale'
       | 'translate-up'
       | 'translate-down';
+    styles?: {
+      background?: string;
+      buttonBackground?: string;
+      color?: string;
+    };
   }
 
   export interface PropsWithOptions<TValue>
@@ -84,6 +93,19 @@ const HoriScroll: HoriScroll.Type = forwardRef<
 
     const horiscrollRef = useRef<HTMLDivElement>(null);
 
+    useEffect(() => {
+      if (horiscrollRef?.current) {
+        horiscrollRef.current.scrollLeft = 0;
+        if (baseProps.styles?.buttonBackground) {
+          horiscrollRef.current.style.setProperty(
+            '--horiscroll-li-button-surface',
+            baseProps.styles.buttonBackground,
+          );
+        }
+      }
+      updateIconRequest();
+    }, []);
+
     /**
     To access a ref while also forwarding it:
 
@@ -133,13 +155,16 @@ const HoriScroll: HoriScroll.Type = forwardRef<
     const renderOptions = useMemo(
       () => (
         <>
-          {['', '-copy'].map((obj) => (
+          {['', '-copy', '-copy1', '-copy2', '-copy3'].map((obj) => (
             <ul className={'horiscroll-inner-list ' + clsname}>
               {options?.map((option, ind) => {
                 const key =
                   (option as HoriScroll.ListItemProps<TValue>).key || ind;
                 const value =
                   (option as HoriScroll.ListItemProps<TValue>).value || option;
+                const icon =
+                  (option as HoriScroll.ListItemProps<TValue>)
+                    .materialIconName || null;
                 return (
                   <li
                     id={`hori__scroll__id__${ind}${obj}`}
@@ -149,7 +174,21 @@ const HoriScroll: HoriScroll.Type = forwardRef<
                       isClickable && onClick && onClick(value as TValue, key)
                     }
                   >
-                    {value as string}
+                    {icon ? (
+                      <span className="horiscroll-material-symbols">
+                        <span className="material-symbols-outlined">
+                          {icon}
+                        </span>
+                        &nbsp;{value as string}
+                      </span>
+                    ) : (option as HoriScroll.ListItemProps<TValue>).icon ? (
+                      <span className="horiscroll-material-symbols">
+                        {(option as HoriScroll.ListItemProps<TValue>).icon}
+                        &nbsp;{value as string}
+                      </span>
+                    ) : (
+                      (value as string)
+                    )}
                   </li>
                 );
               })}
@@ -162,7 +201,7 @@ const HoriScroll: HoriScroll.Type = forwardRef<
 
     const renderChildren = useMemo(
       () =>
-        ['', '-copy'].map(() => (
+        ['', '-copy', '-copy1', '-copy2', '-copy3'].map(() => (
           <div className={'horiscroll-inner-list ' + clsname}>
             {(props as HoriScroll.PropsWithChildren).children}
           </div>
@@ -171,41 +210,40 @@ const HoriScroll: HoriScroll.Type = forwardRef<
     );
 
     return (
-      <div
-        className={
-          'horiscroll-animation-container ' +
-          (blurredEdges ? 'with-mask ' : '') +
-          className
-        }
-        {...baseProps}
-        ref={
-          horiscrollRef
-          //   (ele) => {
-          //   /**
-          //       * The reason it works is that the ref prop accepts a callback, so you can execute whatever code you like when it triggers. Here, we're setting both the ref value (which we said can be a function, thus the if / else) and our innerRef.
-          //       https://stackoverflow.com/a/76490038/27329422
-          //       */
-          //   horiscrollRef.current = ele;
-          //   if (typeof ref === 'function') {
-          //     ref(ele);
-          //   } else if (ref) {
-          //     ref.current = ele;
-          //   }
-          // }
-        }
-      >
-        {options ? renderOptions : renderChildren}
+      <div style={{ display: 'grid' }}>
+        <div
+          className={
+            'horiscroll-animation-container ' +
+            (blurredEdges ? 'with-mask ' : '') +
+            className
+          }
+          {...baseProps}
+          style={{
+            background: baseProps.styles?.background,
+            color: baseProps.styles?.color,
+            ...baseProps.style,
+          }}
+          ref={
+            horiscrollRef
+            //   (ele) => {
+            //   /**
+            //       * The reason it works is that the ref prop accepts a callback, so you can execute whatever code you like when it triggers. Here, we're setting both the ref value (which we said can be a function, thus the if / else) and our innerRef.
+            //       https://stackoverflow.com/a/76490038/27329422
+            //       */
+            //   horiscrollRef.current = ele;
+            //   if (typeof ref === 'function') {
+            //     ref(ele);
+            //   } else if (ref) {
+            //     ref.current = ele;
+            //   }
+            // }
+          }
+        >
+          {options ? renderOptions : renderChildren}
+        </div>
       </div>
     );
   },
 );
 
 export { HoriScroll };
-
-// export const check = () => {
-//   return (
-//     <HoriScroll options={[1, 2]} onClick={(value, key) => alert(`Clicked ${value} with key ${key}`)} />
-//     //   <div></div>
-//     // </HoriScrollInternal>
-//   );
-// };

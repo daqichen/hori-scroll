@@ -3,6 +3,11 @@ import { fn, userEvent, within } from '@storybook/test';
 import { HoriScroll } from '../src/HoriScroll/HoriScroll';
 import React from 'react';
 import './HoriScroll.stories.css';
+import {
+  ChildrenProp,
+  FoodOptionsWithMicrosoftEmojis,
+  SportsOptions,
+} from './data';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -33,86 +38,113 @@ type Story = StoryObj<typeof meta>;
 
 export const PassingInChildrenPropsDemo: Story = {
   render: () => (
-    <HoriScroll
-      animationSpeed="FAST"
-      enteringAnimationType="translate-down"
-      blurredEdges
-      className="storybook-company-logos"
-    >
-      <span>
-        <span className="material-symbols-outlined">fastfood</span>
-        &nbsp;Fastfood
-      </span>
-      <span>
-        <span className="material-symbols-outlined">ramen_dining</span>
-        &nbsp;Ramen Dining
-      </span>
-      <span>
-        <span className="material-symbols-outlined">breakfast_dining</span>
-        &nbsp;Breakfast dining
-      </span>
-      <span>
-        <span className="material-symbols-outlined">grocery</span>&nbsp;Grocery
-      </span>
-      <span>
-        <span className="material-symbols-outlined">tapas</span>&nbsp;Tapas
-      </span>
-      <span>
-        <span className="material-symbols-outlined">set_meal</span>&nbsp;Set
-        meal
-      </span>
-      <span>
-        <span className="material-symbols-outlined">local_pizza</span>
-        &nbsp;Local pizza
-      </span>
-      <span>
-        <span className="material-symbols-outlined">kebab_dining</span>
-        &nbsp;Kebab dining
-      </span>
-    </HoriScroll>
+    <div>
+      <HoriScroll
+        animationSpeed="FAST"
+        enteringAnimationType="translate-down"
+        blurredEdges
+        className="storybook-company-logos"
+      >
+        <ChildrenProp />
+      </HoriScroll>
+    </div>
   ),
   play: ({ canvasElement }) => playFn(canvasElement, 'Kebab dining'),
 };
 
 export const Basic: Story = {
   args: {
-    options: [1, 2, 3],
+    options: FoodOptionsWithMicrosoftEmojis,
   },
-  play: ({ canvasElement }) => playFn(canvasElement, '1'),
+  play: ({ canvasElement }) => playFn(canvasElement, 'Steaming Bowl'),
 };
 
-export const ClickableOptions: Story = {
-  args: {
-    options: ['hello', 'hi'],
-    isClickable: true,
-  },
-  play: ({ canvasElement }) => playFn(canvasElement, 'hello'),
+export const BasicWithCustomStyle: Story = {
+  render: () => (
+    <>
+      <HoriScroll
+        options={FoodOptionsWithMicrosoftEmojis}
+        styles={{
+          background: '#2A2B2E',
+        }}
+      />
+      <HoriScroll
+        options={SportsOptions}
+        styles={{
+          background: '#454955',
+        }}
+      />
+      <HoriScroll
+        options={FoodOptionsWithMicrosoftEmojis}
+        styles={{
+          background: '#E0E0E2',
+          color: 'gray',
+          buttonBackground: '#F4EDEA',
+        }}
+        isClickable
+      />
+    </>
+  ),
+  play: ({ canvasElement }) => playFn(canvasElement, 'Steaming Bowl'),
 };
 
-export const OptionsWithCustomKey: Story = {
+export const NativeSupportForMaterialIcon: Story = {
   args: {
-    options: [
-      { value: 'Option 1 with key 10', key: '10' },
-      { value: 'Option 2 with key 20', key: '20' },
-      {
-        value: 'Option 3 with key 30',
-        key: '30',
-      },
-    ],
+    options: SportsOptions,
     isClickable: true,
   },
-  play: ({ canvasElement }) => playFn(canvasElement, 'Option 1 with key 10'),
+  play: ({ canvasElement }) => playFn(canvasElement, 'Kayaking'),
 };
 
-export const AnimationAndBlurCustomization: Story = {
+export const AnimationSpeedAndStyleVariant: Story = {
+  render: () => (
+    <>
+      <h4>Translate Down & Slow Speed</h4>
+      <HoriScroll
+        options={FoodOptionsWithMicrosoftEmojis}
+        styles={{
+          background: '#717C89',
+          buttonBackground: '#8AA2A9',
+        }}
+        enteringAnimationType="translate-down"
+        animationSpeed="SLOW"
+        isClickable
+      />
+      <h4>Scale Up & Medium Speed</h4>
+      <HoriScroll
+        options={SportsOptions}
+        styles={{
+          background: '#4D4861',
+          buttonBackground: '#605770',
+        }}
+        enteringAnimationType="scale"
+        animationSpeed="MEDIUM"
+        isClickable
+      />
+      <h4>Translate Up & Fast Speed</h4>
+      <HoriScroll
+        options={FoodOptionsWithMicrosoftEmojis}
+        styles={{
+          background: '#E0E0E2',
+          color: 'gray',
+          buttonBackground: '#F4EDEA',
+        }}
+        enteringAnimationType="translate-up"
+        animationSpeed="FAST"
+        isClickable
+      />
+    </>
+  ),
+  play: ({ canvasElement }) => playFn(canvasElement, 'Steaming Bowl'),
+};
+
+export const BlurEffect: Story = {
   args: {
-    options: ['This', 'is', 'faster'],
+    options: FoodOptionsWithMicrosoftEmojis,
     isClickable: true,
-    animationSpeed: 'FAST',
-    enteringAnimationType: 'translate-up',
     blurredEdges: true,
   },
-  play: ({ canvasElement }) => playFn(canvasElement, 'faster'),
+  play: ({ canvasElement }) => playFn(canvasElement, 'Steaming Bowl'),
 };
 
 const playFn = async (canvasElement: HTMLElement, match: string) => {
