@@ -1,7 +1,7 @@
 export const ANIMATION_SPEED_DICT = {
   FAST: 1.75,
-  MEDIUM: 1,
-  SLOW: 0.75,
+  MEDIUM: 1.25,
+  SLOW: 1,
 } as const;
 
 export type ANIMATION_SPEED_TYPE = keyof typeof ANIMATION_SPEED_DICT;

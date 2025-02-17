@@ -37,6 +37,7 @@
   transform-style: preserve-3d;
   backface-visibility: hidden;
   justify-content: space-around;
+  /* outline: solid 1px red; */
 }
 
 .horiscroll-material-symbols {
