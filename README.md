@@ -1,4 +1,4 @@
-<img width="200px" height="200px" alt="hori-scroll" src="https://github.com/user-attachments/assets/f640e889-00e9-4c86-9649-477280489ce7"/>
+<img width="200px" height="200px" alt="hori-scroll" src="https://github.com/user-attachments/assets/71b05727-90a6-42d6-ae19-c9d8933a9a6f"/>
 
 # `hori-scroll`
 
