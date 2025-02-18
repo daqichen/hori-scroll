@@ -1,5 +1,5 @@
 import React, { FC, Key } from 'react';
-import { HoriScroll } from '../src/HoriScroll/HoriScroll';
+import { HoriScrollClass } from '../src/HoriScroll/types/HoriScroll';
 
 export const SportsOptions = [
   {
@@ -28,7 +28,7 @@ export const SportsOptions = [
     materialIconName: 'kayaking',
   },
 ] as Array<
-  HoriScroll.ListItemProps<unknown> & {
+  HoriScrollClass.ListItemProps<unknown> & {
     key: Key;
   }
 >;
@@ -123,7 +123,7 @@ export const FoodOptionsWithMicrosoftEmojis = [
     ),
   },
 ] as Array<
-  HoriScroll.ListItemProps<unknown> & {
+  HoriScrollClass.ListItemProps<unknown> & {
     key: Key;
   }
 >;
@@ -160,5 +160,35 @@ export const ChildrenProp: FC = () => (
       <span className="material-symbols-outlined">kebab_dining</span>
       &nbsp;Kebab dining
     </span>
+  </>
+);
+
+export const ChildrenPropExample2: FC = () => (
+  <>
+    {Array(3)
+      .fill(null)
+      .map(() => (
+        <div
+          style={{
+            color: '#fafafa',
+            width: '400px',
+            whiteSpace: 'normal',
+            marginRight: '1rem',
+          }}
+        >
+          <h4>What is Lorem Ipsum?</h4>
+          <div>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
+            convallis, felis et sagittis luctus, purus nibh fermentum justo, at
+            dictum diam erat congue justo. Praesent ut luctus enim. Phasellus
+            maximus mollis nulla at interdum. Donec cursus lectus sit amet nisl
+            rhoncus aliquet. Sed tellus metus, vestibulum ac elit id, laoreet
+            blandit nisi. Nunc porta accumsan volutpat. Etiam posuere ultrices
+            risus id sollicitudin. Nam pulvinar venenatis ipsum ac ullamcorper.
+            Mauris nec sagittis ligula. Phasellus ac rhoncus arcu, id facilisis
+            mi.
+          </div>
+        </div>
+      ))}
   </>
 );

@@ -1,4 +1,4 @@
-import { IconName } from '../material-icon-names';
+import { IconName } from '../types/material-icon-names';
 
 export const updateIconRequest = () => {
   const iconArray = Array.from(
@@ -26,7 +26,10 @@ export const updateIconRequest = () => {
           []) as IconName[]),
       ]),
   );
-  console.log('overallList', Array.from(new Set(overallList)).sort().join(','));
+  const overallListJoined = Array.from(new Set(overallList)).sort().join(',');
+
+  if (overallListJoined.length === 0) return;
+
   const linkTagsToDelete = Array.from(totalExistingTagsHTMLCollection).map(
     (item, ind) => {
       if (
@@ -38,7 +41,6 @@ export const updateIconRequest = () => {
       }
     },
   );
-  console.log('linkTagsToDelete', linkTagsToDelete);
 
   linkTagsToDelete.forEach((ind) => {
     if (ind) totalExistingTagsHTMLCollection[ind]?.remove();
@@ -47,6 +49,6 @@ export const updateIconRequest = () => {
   const stylesheet = document.createElement('link');
   stylesheet.rel = 'stylesheet';
   stylesheet.type = 'text/css';
-  stylesheet.href = `https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=${Array.from(new Set(overallList)).sort().join(',')}`;
+  stylesheet.href = `https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=${overallListJoined}`;
   document.head.appendChild(stylesheet);
 };

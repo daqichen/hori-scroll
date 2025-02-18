@@ -1,8 +1,5 @@
 import {
-  ComponentProps,
   forwardRef,
-  Key,
-  ReactNode,
   Ref,
   useEffect,
   useMemo,
@@ -11,60 +8,9 @@ import {
   useImperativeHandle,
 } from 'react';
 import './HoriScroll.css';
-import {
-  ANIMATION_SPEED_DICT,
-  ANIMATION_SPEED_TYPE,
-  applyInitAnimation,
-} from '../utils/animate';
-import { IconName } from '../material-icon-names';
-import { updateIconRequest } from '../utils/icons';
-
-// eslint-disable-next-line @typescript-eslint/no-namespace
-namespace HoriScroll {
-  export interface ListItemProps<TValue>
-    extends Omit<ComponentProps<'li'>, 'onClick' | 'value'> {
-    onClick?: (value: TValue, key: Key) => void;
-    value: TValue;
-    materialIconName?: IconName | string;
-    icon?: ReactNode;
-  }
-
-  export interface PropsWithChildren
-    extends Omit<ComponentProps<'div'>, 'onClick'> {
-    animationSpeed?: ANIMATION_SPEED_TYPE;
-    blurredEdges?: boolean;
-    enteringAnimationType?:
-      | 'none'
-      | 'scale'
-      | 'translate-up'
-      | 'translate-down';
-    styles?: {
-      background?: string;
-      buttonBackground?: string;
-      color?: string;
-    };
-  }
-
-  export interface PropsWithOptions<TValue>
-    extends Omit<PropsWithChildren, 'children'> {
-    onClick?: (value: TValue, key: Key) => void;
-    isClickable?: boolean;
-    options?: Array<
-      | (TValue & Key)
-      | (ListItemProps<TValue> & {
-          key: Key;
-        })
-    >;
-  }
-
-  export interface Type {
-    (props: PropsWithChildren, ref?: Ref<HTMLDivElement>): ReactNode;
-    <TValue>(
-      props: PropsWithOptions<TValue>,
-      ref?: Ref<HTMLDivElement>,
-    ): ReactNode;
-  }
-}
+import { Animation, ANIMATION_SPEED_DICT } from './utils/animate';
+import { updateIconRequest } from './utils/icons';
+import { HoriScrollClass } from './types/HoriScroll';
 
 // Type guard to check if option is TValue
 // const isTValue = <TValue,>(option: any): option is TValue => {
@@ -72,12 +18,14 @@ namespace HoriScroll {
 //   return 'specificProperty' in option; // Replace 'specificProperty' with an actual property of TValue
 // };
 
-const HoriScroll: HoriScroll.Type = forwardRef<
+const HoriScroll: HoriScrollClass.Type = forwardRef<
   HTMLDivElement,
-  HoriScroll.PropsWithChildren | HoriScroll.PropsWithOptions<unknown>
+  HoriScrollClass.PropsWithChildren | HoriScrollClass.PropsWithOptions<unknown>
 >(
   <TValue,>(
-    props: HoriScroll.PropsWithChildren | HoriScroll.PropsWithOptions<TValue>,
+    props:
+      | HoriScrollClass.PropsWithChildren
+      | HoriScrollClass.PropsWithOptions<TValue>,
     ref?: Ref<HTMLDivElement>,
   ) => {
     const {
@@ -89,22 +37,9 @@ const HoriScroll: HoriScroll.Type = forwardRef<
       animationSpeed = 'MEDIUM',
       className,
       ...baseProps
-    } = props as HoriScroll.PropsWithOptions<TValue>;
+    } = props as HoriScrollClass.PropsWithOptions<TValue>;
 
     const horiscrollRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-      if (horiscrollRef?.current) {
-        horiscrollRef.current.scrollLeft = 0;
-        if (baseProps.styles?.buttonBackground) {
-          horiscrollRef.current.style.setProperty(
-            '--horiscroll-li-button-surface',
-            baseProps.styles.buttonBackground,
-          );
-        }
-      }
-      updateIconRequest();
-    }, []);
 
     /**
     To access a ref while also forwarding it:
@@ -121,14 +56,30 @@ const HoriScroll: HoriScroll.Type = forwardRef<
     createHandle: A function that takes no arguments and returns the ref handle you want to expose. That ref handle can have any type. Usually, you will return an object with the methods you want to expose. */
     useImperativeHandle(ref, () => horiscrollRef.current!, []);
 
-    useEffect(
-      () =>
-        applyInitAnimation(
-          horiscrollRef?.current,
-          ANIMATION_SPEED_DICT[animationSpeed],
-        ),
-      [],
-    );
+    useEffect(() => {
+      if (horiscrollRef?.current) {
+        horiscrollRef.current.scrollLeft = 0;
+        if (baseProps.styles?.buttonBackground) {
+          horiscrollRef.current.style.setProperty(
+            '--horiscroll-li-button-surface',
+            baseProps.styles.buttonBackground,
+          );
+        }
+      }
+      updateIconRequest();
+
+      const { init, destroy } = horiscrollRef.current
+        ? Animation(horiscrollRef.current, ANIMATION_SPEED_DICT[animationSpeed])
+        : { init: () => null, destroy: () => null };
+
+      if (horiscrollRef.current) {
+        init();
+      }
+
+      return () => {
+        destroy();
+      };
+    }, []);
 
     // const enteringAnimationCls = () =>
 
@@ -159,11 +110,12 @@ const HoriScroll: HoriScroll.Type = forwardRef<
             <ul className={'horiscroll-inner-list ' + clsname}>
               {options?.map((option, ind) => {
                 const key =
-                  (option as HoriScroll.ListItemProps<TValue>).key || ind;
+                  (option as HoriScrollClass.ListItemProps<TValue>).key || ind;
                 const value =
-                  (option as HoriScroll.ListItemProps<TValue>).value || option;
+                  (option as HoriScrollClass.ListItemProps<TValue>).value ||
+                  option;
                 const icon =
-                  (option as HoriScroll.ListItemProps<TValue>)
+                  (option as HoriScrollClass.ListItemProps<TValue>)
                     .materialIconName || null;
                 return (
                   <li
@@ -181,9 +133,10 @@ const HoriScroll: HoriScroll.Type = forwardRef<
                         </span>
                         &nbsp;{value as string}
                       </span>
-                    ) : (option as HoriScroll.ListItemProps<TValue>).icon ? (
+                    ) : (option as HoriScrollClass.ListItemProps<TValue>)
+                        .icon ? (
                       <span className="horiscroll-material-symbols">
-                        {(option as HoriScroll.ListItemProps<TValue>).icon}
+                        {(option as HoriScrollClass.ListItemProps<TValue>).icon}
                         &nbsp;{value as string}
                       </span>
                     ) : (
@@ -203,10 +156,10 @@ const HoriScroll: HoriScroll.Type = forwardRef<
       () =>
         ['', '-copy', '-copy1', '-copy2', '-copy3'].map(() => (
           <div className={'horiscroll-inner-list ' + clsname}>
-            {(props as HoriScroll.PropsWithChildren).children}
+            {(props as HoriScrollClass.PropsWithChildren).children}
           </div>
         )),
-      [(props as HoriScroll.PropsWithChildren).children],
+      [(props as HoriScrollClass.PropsWithChildren).children],
     );
 
     return (

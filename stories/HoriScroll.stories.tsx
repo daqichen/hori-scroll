@@ -5,6 +5,7 @@ import React from 'react';
 import './HoriScroll.stories.css';
 import {
   ChildrenProp,
+  ChildrenPropExample2,
   FoodOptionsWithMicrosoftEmojis,
   SportsOptions,
 } from './data';
@@ -40,12 +41,29 @@ export const PassingInChildrenPropsDemo: Story = {
   render: () => (
     <div>
       <HoriScroll
-        animationSpeed="FAST"
+        animationSpeed="MEDIUM"
         enteringAnimationType="translate-down"
         blurredEdges
         className="storybook-company-logos"
       >
         <ChildrenProp />
+      </HoriScroll>
+    </div>
+  ),
+  play: ({ canvasElement }) => playFn(canvasElement, 'Kebab dining'),
+};
+
+export const PassingInChildrenPropsDemo2: Story = {
+  render: () => (
+    <div>
+      <HoriScroll
+        animationSpeed="MEDIUM"
+        enteringAnimationType="translate-down"
+        // blurredEdges
+        className="storybook-company-logos"
+        style={{ background: '#454955' }}
+      >
+        <ChildrenPropExample2 />
       </HoriScroll>
     </div>
   ),

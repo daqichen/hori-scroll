@@ -126,6 +126,7 @@
   animation: var(--animation-type) linear both;
   animation-timeline: view(inline auto);
   animation-range: entry cover 10%;
+  animation-duration: 1ms;
 }
 
 .horiscroll-animation-container.with-mask {
