@@ -67,7 +67,7 @@ export const PassingInChildrenPropsDemo2: Story = {
       </HoriScroll>
     </div>
   ),
-  play: ({ canvasElement }) => playFn(canvasElement, 'Kebab dining'),
+  play: ({ canvasElement }) => playFn(canvasElement, 'What is Lorem Ipsum?'),
 };
 
 export const Basic: Story = {

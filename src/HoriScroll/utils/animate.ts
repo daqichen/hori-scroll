@@ -32,8 +32,26 @@ export function Animation(
       //   // console.log(horiscrollRef.current.style.transform);
       // }
       animate();
+      crossBrowserSupport();
     }, 25);
     listen();
+  };
+
+  const crossBrowserSupport = () => {
+    const totalExistingTagsHTMLCollection =
+      document.getElementsByTagName('script');
+    const existingMaterialSymbolsTag = Array.from(
+      totalExistingTagsHTMLCollection,
+    ).find((item) =>
+      item.src?.includes(
+        'https://flackr.github.io/scroll-timeline/dist/scroll-timeline.js',
+      ),
+    );
+    if (existingMaterialSymbolsTag) return;
+    const scriptTag = document.createElement('script');
+    scriptTag.src =
+      'https://flackr.github.io/scroll-timeline/dist/scroll-timeline.js';
+    document.body.appendChild(scriptTag);
   };
 
   /**

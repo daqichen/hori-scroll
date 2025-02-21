@@ -173,7 +173,7 @@ export const ChildrenPropExample2: FC = () => (
             color: '#fafafa',
             width: '400px',
             whiteSpace: 'normal',
-            marginRight: '1rem',
+            margin: '0 1rem',
           }}
         >
           <h4>What is Lorem Ipsum?</h4>
