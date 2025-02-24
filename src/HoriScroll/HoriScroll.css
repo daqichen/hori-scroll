@@ -1,19 +1,30 @@
-:root {
+.horiscroll-instance-container {
   font-family: Arial, Helvetica, sans-serif;
-  --horiscroll-padding: 1rem 0.5rem;
-  --horiscroll-margin: 2rem 0.5rem;
+  --horiscroll-container-width: 50vw;
+  --horiscroll-gap: 24px;
+  --horiscroll-speed-duration: 20s;
+  --horiscroll-button-padding: 1rem 0.5rem;
   --horiscroll-inner-list-bg: #023047;
   --horiscroll-li-button-surface: #415a77;
   --horiscroll-text: white;
+
+  width: var(--horiscroll-container-width, 50vw);
+  background: var(--horiscroll-inner-list-bg, #023047);
+  overflow-x: scroll;
+}
+
+.horiscroll-instance-container.with-mask {
+  mask: linear-gradient(90deg, transparent, white 5%, white 95%, transparent);
 }
 
 .horiscroll-animation-container {
-  white-space: nowrap;
-  overflow: auto;
-  scrollbar-width: none;
-  display: flex;
-  background: var(--horiscroll-inner-list-bg);
-  color: var(--horiscroll-text);
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  padding-inline: 0;
+  overflow-x: scroll;
+  width: max-content;
+  /* background: var(--horiscroll-inner-list-bg, #023047); */
+  color: var(--horiscroll-text, white);
   .material-symbols-outlined {
     font-variation-settings:
       'FILL' 0,
@@ -23,21 +34,34 @@
   }
 }
 
-.horiscroll-animation-container::-webkit-scrollbar {
+/* ==========================================================================
+Animation-related CSS
+========================================================================== */
+.horiscroll-instance-container[data-animated='true'] {
+  overflow-x: hidden;
+}
+
+.horiscroll-animation-container[data-animated='true']::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
 }
 
-.horiscroll-inner-list {
-  margin: 0;
-  padding-inline: 0;
+.horiscroll-animation-container[data-animated='true'] {
+  overflow-x: hidden;
+  scrollbar-width: none;
+  cursor: grab;
+}
+
+/* ==========================================================================
+Inner (un)animated list styles
+========================================================================== */
+ul.horiscroll-inner-list {
   list-style: none;
+  padding-inline: 0;
+  margin-inline: 0;
   display: flex;
-  flex: 0 0 100%;
-  /* overflow: hidden; */
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
-  justify-content: space-around;
-  /* outline: solid 1px red; */
+  width: max-content;
+  flex-wrap: nowrap;
+  gap: var(--horiscroll-gap, 16px) !important;
 }
 
 .horiscroll-material-symbols {
@@ -46,44 +70,36 @@
   padding: 0 1rem;
 }
 
-.horiscroll-inner-list li {
-  margin: var(--horiscroll-margin, 0.5rem);
-  width: fit-content;
+/* ul.horiscroll-inner-list li[class*='copy'] { */
+/* margin: var(--horiscroll-margin, 0.5rem); */
+/* width: fit-content; */
+/* transform: translateY(10px); */
+/* } */
+
+ul.horiscroll-inner-list > * {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
-.horiscroll-inner-list.is-button li {
+ul.horiscroll-inner-list.is-button li {
   cursor: pointer;
-  padding: var(--horiscroll-padding, 1rem);
+  padding: var(--horiscroll-button-padding, 1rem);
   border-radius: 0.5rem;
   background: var(--horiscroll-li-button-surface);
-  /* box-shadow: 0 0.15rem 0.5rem -0.05rem var(--clr-primary-900); */
 }
 
-.horiscroll-inner-list.is-button li:hover {
-  /* background-color: rgba(255, 255, 255, 0.05); */
+ul.horiscroll-inner-list.is-button li:hover {
   opacity: 0.8;
   filter: alpha(opacity=80);
-}
-
-@keyframes horiscroll-animate {
-  0% {
-    left: 100%;
-  }
-
-  100% {
-    left: -100%;
-  }
 }
 
 @keyframes horiscroll-scaling {
   from {
     opacity: 0;
-    /* transform: translateX(20px); */
     scale: 0.6;
   }
   to {
     opacity: 1;
-    /* transform: translateX(0px); */
     scale: 1;
   }
 }
@@ -122,15 +138,57 @@
   --animation-type: horiscroll-translate-down;
 }
 
-.horiscroll-inner-list[class*='entering-animation'] > * {
-  animation: var(--animation-type) linear both;
-  /* animation-timeline: --foo; */
+ul.horiscroll-inner-list[class*='entering-animation'] > * {
+  animation-duration: 1s;
+  animation: var(--animation-type) 1s linear forwards;
+  /* animation-timeline: view(20% 40%); */
+  /* animation: var(--animation-type) linear both;
   animation-timeline: view(inline auto);
-  /* animation-range: 0px 10px; */
   animation-range: entry 0.0001% contain 0.0001%;
-  animation-duration: 1ms;
+  animation-duration: 1ms; */
 }
 
-.horiscroll-animation-container.with-mask {
-  mask: linear-gradient(90deg, transparent, white 5%, white 95%, transparent);
+/* ==========================================================================
+Accessability (reduce motion)
+========================================================================== */
+@media (prefers-reduced-motion) {
+  .horiscroll-animation-container[data-animated='true']::-webkit-scrollbar {
+    display: initial;
+  }
+
+  .horiscroll-instance-container[data-animated='true'] {
+    overflow-x: scroll;
+  }
+
+  .horiscroll-animation-container[data-animated='true'] {
+    overflow-x: scroll;
+    cursor: initial;
+
+    /* .horiscroll-inner-list {
+      animation: none;
+    } */
+  }
 }
+
+/* @keyframes horiscroll-animate {
+  to {
+    transform: translate(calc(-50% - var(--horiscroll-gap, 1rem) / 2));
+  }
+} */
+
+/* .horiscroll-animation-container[data-animated='true']:has(
+    *:hover,
+    *:active,
+    *:focus
+  ) {
+  .horiscroll-inner-list {
+    animation-play-state: paused;
+  }
+} */
+
+/* .horiscroll-animation-container[data-animated='true'] {
+  .horiscroll-inner-list {
+    animation: horiscroll-animate var(--horiscroll-speed-duration, 20s) linear
+      forwards infinite;
+  }
+} */

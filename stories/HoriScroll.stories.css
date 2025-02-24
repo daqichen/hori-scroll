@@ -1,11 +1,10 @@
 .storybook-company-logos {
-  background: #f7f7f9;
-  padding: 2rem 0;
+  /* padding: 2rem 1rem; */
 }
 
 .storybook-company-logos .horiscroll-inner-list > span {
   color: gray;
   display: flex;
   align-items: center;
-  padding: 0 1rem;
+  padding: 1rem;
 }

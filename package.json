@@ -37,7 +37,7 @@
     "dev": "rslib build --watch",
     "format": "prettier --write .",
     "lint": "eslint .",
-    "storybook": "storybook dev",
+    "storybook": "storybook dev --port=8000",
     "test": "vitest run",
     "chromatic": "npx chromatic --exit-zero-on-changes"
   },

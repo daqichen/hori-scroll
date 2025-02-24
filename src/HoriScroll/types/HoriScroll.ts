@@ -15,23 +15,48 @@ export namespace HoriScrollClass {
 
   export interface PropsWithChildren
     extends Omit<ComponentProps<'div'>, 'onClick'> {
+    /**
+     * @prop `animationEnabled` -- auto-scroll animation applied?
+     * @default true
+     */
+    animationEnabled?: boolean;
+    /**
+     * @prop `animationSpeed` -- the speed of auto-scroll animation
+     * @default "MEDIUM"
+     */
     animationSpeed?: ANIMATION_SPEED_TYPE;
+    /**
+     * @prop `blurredEdges` -- blurred edge effect applied?
+     * @default false
+     */
     blurredEdges?: boolean;
+    /**
+     * @prop `enteringAnimationType` -- type of entering effect
+     * @default "none"
+     */
     enteringAnimationType?:
       | 'none'
       | 'scale'
       | 'translate-up'
       | 'translate-down';
+    /**
+     * @prop `styles` -- different from `style` which is the native prop on HTML elements, `styles` are a set of tokens specifically set to be customizable internally
+     */
     styles?: {
       background?: string;
       buttonBackground?: string;
       color?: string;
+      gapBetweenElementsInPixels?: number;
     };
   }
 
   export interface PropsWithOptions<TValue>
     extends Omit<PropsWithChildren, 'children'> {
     onClick?: (value: TValue, key: Key) => void;
+    /**
+     * @prop `isClickable` -- options should be clickable? when `true`, the options will appear as buttons
+     * @default false
+     */
     isClickable?: boolean;
     options?: Array<
       | (TValue & Key)

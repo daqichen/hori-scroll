@@ -8,7 +8,7 @@ export default create({
 
   brandTitle: 'HoriScroll',
   brandUrl: 'https://github.com/daqichen/hori-scroll',
-  // brandImage: 'https://www.svgrepo.com/show/297912/conveyor.svg',
+  brandImage: './logo.png',
   brandTarget: '_self',
 
   //

@@ -31,6 +31,7 @@ const HoriScroll: HoriScrollClass.Type = forwardRef<
     const {
       options,
       onClick,
+      animationEnabled = true,
       isClickable = false,
       blurredEdges = false,
       enteringAnimationType = 'none',
@@ -57,20 +58,16 @@ const HoriScroll: HoriScrollClass.Type = forwardRef<
     useImperativeHandle(ref, () => horiscrollRef.current!, []);
 
     useEffect(() => {
-      if (horiscrollRef?.current) {
-        horiscrollRef.current.scrollLeft = 0;
-        if (baseProps.styles?.buttonBackground) {
-          horiscrollRef.current.style.setProperty(
-            '--horiscroll-li-button-surface',
-            baseProps.styles.buttonBackground,
-          );
-        }
-      }
-      updateIconRequest();
-
       const { init, destroy } = horiscrollRef.current
-        ? Animation(horiscrollRef.current, ANIMATION_SPEED_DICT[animationSpeed])
+        ? Animation(
+            horiscrollRef.current,
+            ANIMATION_SPEED_DICT[animationSpeed],
+            baseProps.styles,
+            animationEnabled,
+          )
         : { init: () => null, destroy: () => null };
+
+      updateIconRequest();
 
       if (horiscrollRef.current) {
         init();
@@ -80,8 +77,6 @@ const HoriScroll: HoriScrollClass.Type = forwardRef<
         destroy();
       };
     }, []);
-
-    // const enteringAnimationCls = () =>
 
     const clsname = useMemo(
       () =>
@@ -106,9 +101,9 @@ const HoriScroll: HoriScrollClass.Type = forwardRef<
     const renderOptions = useMemo(
       () => (
         <>
-          {['', '-copy', '-copy1', '-copy2', '-copy3'].map((obj) => (
-            <ul className={'horiscroll-inner-list ' + clsname}>
-              {options?.map((option, ind) => {
+          <ul className={'horiscroll-inner-list ' + clsname}>
+            {['', '-copy'].map((obj) =>
+              options?.map((option, ind) => {
                 const key =
                   (option as HoriScrollClass.ListItemProps<TValue>).key || ind;
                 const value =
@@ -125,6 +120,7 @@ const HoriScroll: HoriScrollClass.Type = forwardRef<
                     onClick={() =>
                       isClickable && onClick && onClick(value as TValue, key)
                     }
+                    className={obj}
                   >
                     {icon ? (
                       <span className="horiscroll-material-symbols">
@@ -144,53 +140,42 @@ const HoriScroll: HoriScrollClass.Type = forwardRef<
                     )}
                   </li>
                 );
-              })}
-            </ul>
-          ))}
+              }),
+            )}
+          </ul>
         </>
       ),
       [options],
     );
 
     const renderChildren = useMemo(
-      () =>
-        ['', '-copy', '-copy1', '-copy2', '-copy3'].map(() => (
-          <div className={'horiscroll-inner-list ' + clsname}>
-            {(props as HoriScrollClass.PropsWithChildren).children}
-          </div>
-        )),
+      () => (
+        <ul className={'horiscroll-inner-list ' + clsname}>
+          {(props as HoriScrollClass.PropsWithChildren).children}
+          {(props as HoriScrollClass.PropsWithChildren).children}
+        </ul>
+      ),
       [(props as HoriScrollClass.PropsWithChildren).children],
     );
 
     return (
-      <div style={{ display: 'grid' }}>
+      <div
+        className={
+          'horiscroll-instance-container ' + (blurredEdges ? 'with-mask ' : '')
+        }
+        data-animated={animationEnabled ? 'true' : 'false'}
+        {...baseProps}
+      >
         <div
-          className={
-            'horiscroll-animation-container ' +
-            (blurredEdges ? 'with-mask ' : '') +
-            className
-          }
-          {...baseProps}
-          style={{
-            background: baseProps.styles?.background,
-            color: baseProps.styles?.color,
-            ...baseProps.style,
-          }}
+          className={'horiscroll-animation-container ' + className}
           ref={
             horiscrollRef
-            //   (ele) => {
-            //   /**
-            //       * The reason it works is that the ref prop accepts a callback, so you can execute whatever code you like when it triggers. Here, we're setting both the ref value (which we said can be a function, thus the if / else) and our innerRef.
-            //       https://stackoverflow.com/a/76490038/27329422
-            //       */
-            //   horiscrollRef.current = ele;
-            //   if (typeof ref === 'function') {
-            //     ref(ele);
-            //   } else if (ref) {
-            //     ref.current = ele;
-            //   }
-            // }
+            /** Alternative:
+             * https://stackoverflow.com/a/76490038/27329422
+             */
           }
+          data-animated={animationEnabled ? 'true' : 'false'}
+          // {...baseProps}
         >
           {options ? renderOptions : renderChildren}
         </div>
