@@ -34,14 +34,6 @@ export function Animation(
   const paddingOffset = Math.floor(
     (styleTokens?.gapBetweenElementsInPixels ?? 24) / 2,
   );
-  // console.log(
-  //   'paddingOffset',
-  //   paddingOffset,
-  //   'scrollWidth',
-  //   scrollWidth,
-  //   'ratio',
-  //   window.devicePixelRatio,
-  // );
 
   /**
    * Initialize the animation
@@ -147,12 +139,14 @@ export function Animation(
   };
 
   const addListeners = () => {
-    scroller.addEventListener('mousemove', (e) => drag(e), { signal });
-    scroller.addEventListener('mousedown', (e) => startDragging(e), { signal });
-    scroller.addEventListener('mouseup', stopDragging, { signal });
-    scroller.addEventListener('mouseleave', stopDragging, { signal });
+    scroller.addEventListener('pointermove', (e) => drag(e), { signal });
+    scroller.addEventListener('pointerdown', (e) => startDragging(e), {
+      signal,
+    });
+    scroller.addEventListener('pointerup', stopDragging, { signal });
+    scroller.addEventListener('pointerleave', stopDragging, { signal });
     scroller.addEventListener(
-      'mouseleave',
+      'pointerleave',
       () => {
         interval = setInterval(shiftLeft, intervalTime);
       },
@@ -160,7 +154,7 @@ export function Animation(
     );
 
     scroller.addEventListener(
-      'mouseover',
+      'pointerover',
       () => {
         clearInterval(interval);
       },
