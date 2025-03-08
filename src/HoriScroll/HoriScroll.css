@@ -54,11 +54,10 @@ Animation-related CSS
 /* ==========================================================================
 Inner (un)animated list styles
 ========================================================================== */
-ul.horiscroll-inner-list {
-  list-style: none;
-  padding-inline: 0;
-  margin-inline: 0;
+div.horiscroll-inner-list {
   display: flex;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   width: max-content;
   flex-wrap: nowrap;
   gap: var(--horiscroll-gap, 16px) !important;
@@ -70,25 +69,25 @@ ul.horiscroll-inner-list {
   padding: 0 1rem;
 }
 
-/* ul.horiscroll-inner-list li[class*='copy'] { */
+/* div.horiscroll-inner-list > div[class*='copy'] { */
 /* margin: var(--horiscroll-margin, 0.5rem); */
 /* width: fit-content; */
 /* transform: translateY(10px); */
 /* } */
 
-ul.horiscroll-inner-list > * {
+div.horiscroll-inner-list > * {
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
 
-ul.horiscroll-inner-list.is-button li {
+div.horiscroll-inner-list.is-button > div {
   cursor: pointer;
   padding: var(--horiscroll-button-padding, 1rem);
   border-radius: 0.5rem;
   background: var(--horiscroll-li-button-surface);
 }
 
-ul.horiscroll-inner-list.is-button li:hover {
+div.horiscroll-inner-list.is-button > div:hover {
   opacity: 0.8;
   filter: alpha(opacity=80);
 }
@@ -138,7 +137,7 @@ ul.horiscroll-inner-list.is-button li:hover {
   --animation-type: horiscroll-translate-down;
 }
 
-ul.horiscroll-inner-list[class*='entering-animation'] > * {
+div.horiscroll-inner-list[class*='entering-animation'] > * {
   animation-duration: 1s;
   animation: var(--animation-type) 1s linear forwards;
   /* animation-timeline: view(20% 40%); */

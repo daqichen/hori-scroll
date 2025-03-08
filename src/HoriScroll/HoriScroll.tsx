@@ -100,60 +100,55 @@ const HoriScroll: HoriScrollClass.Type = forwardRef<
 
     const renderOptions = useMemo(
       () => (
-        <>
-          <ul className={'horiscroll-inner-list ' + clsname}>
-            {['', '-copy'].map((obj) =>
-              options?.map((option, ind) => {
-                const key =
-                  (option as HoriScrollClass.ListItemProps<TValue>).key || ind;
-                const value =
-                  (option as HoriScrollClass.ListItemProps<TValue>).value ||
-                  option;
-                const icon =
-                  (option as HoriScrollClass.ListItemProps<TValue>)
-                    .materialIconName || null;
-                return (
-                  <li
-                    id={`hori__scroll__id__${ind}${obj}`}
-                    key={`hori__scroll__key__${key}${obj}`}
-                    aria-label={value as string}
-                    onClick={() =>
-                      isClickable && onClick && onClick(value as TValue, key)
-                    }
-                    className={obj}
-                  >
-                    {icon ? (
-                      <span className="horiscroll-material-symbols">
-                        <span className="material-symbols-outlined">
-                          {icon}
-                        </span>
-                        &nbsp;{value as string}
-                      </span>
-                    ) : (option as HoriScrollClass.ListItemProps<TValue>)
-                        .icon ? (
-                      <span className="horiscroll-material-symbols">
-                        {(option as HoriScrollClass.ListItemProps<TValue>).icon}
-                        &nbsp;{value as string}
-                      </span>
-                    ) : (
-                      (value as string)
-                    )}
-                  </li>
-                );
-              }),
-            )}
-          </ul>
-        </>
+        <div className={'horiscroll-inner-list ' + clsname}>
+          {['', '-copy'].map((obj) =>
+            options?.map((option, ind) => {
+              const key =
+                (option as HoriScrollClass.ListItemProps<TValue>).key || ind;
+              const value =
+                (option as HoriScrollClass.ListItemProps<TValue>).value ||
+                option;
+              const icon =
+                (option as HoriScrollClass.ListItemProps<TValue>)
+                  .materialIconName || null;
+              return (
+                <div
+                  id={`hori__scroll__id__${ind}${obj}`}
+                  key={`hori__scroll__key__${key}${obj}`}
+                  aria-label={value as string}
+                  onClick={() =>
+                    isClickable && onClick && onClick(value as TValue, key)
+                  }
+                  className={obj}
+                >
+                  {icon ? (
+                    <span className="horiscroll-material-symbols">
+                      <span className="material-symbols-outlined">{icon}</span>
+                      &nbsp;{value as string}
+                    </span>
+                  ) : (option as HoriScrollClass.ListItemProps<TValue>).icon ? (
+                    <span className="horiscroll-material-symbols">
+                      {(option as HoriScrollClass.ListItemProps<TValue>).icon}
+                      &nbsp;{value as string}
+                    </span>
+                  ) : (
+                    (value as string)
+                  )}
+                </div>
+              );
+            }),
+          )}
+        </div>
       ),
       [options],
     );
 
     const renderChildren = useMemo(
       () => (
-        <ul className={'horiscroll-inner-list ' + clsname}>
+        <div className={'horiscroll-inner-list ' + clsname}>
           {(props as HoriScrollClass.PropsWithChildren).children}
           {(props as HoriScrollClass.PropsWithChildren).children}
-        </ul>
+        </div>
       ),
       [(props as HoriScrollClass.PropsWithChildren).children],
     );
