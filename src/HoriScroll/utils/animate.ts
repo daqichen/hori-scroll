@@ -16,8 +16,6 @@ export function Animation(
   styleTokens: HoriScrollClass.PropsWithChildren['styles'],
   animationEnabled: boolean,
 ) {
-  let scrollWidth = scroller.scrollWidth;
-
   /**
    * The interval id returned by setInterval
    */
@@ -47,7 +45,6 @@ export function Animation(
     ) {
       addListeners();
       setTimeout(simulateMouse, 3000);
-      scrollWidth = scroller.scrollWidth;
     }
   };
 
@@ -111,17 +108,19 @@ export function Animation(
     if (!mouseDown) return;
     const x = e.pageX - scroller.offsetLeft;
     const offset = x - startX;
-    if (offset * -1 > scrollWidth / 2 + paddingOffset * 2) {
-      return setScrollTranslate(offset + scrollWidth / 2 + paddingOffset);
+    if (offset * -1 > scroller.scrollWidth / 2 + paddingOffset * 2) {
+      return setScrollTranslate(
+        offset + scroller.scrollWidth / 2 + paddingOffset,
+      );
     }
     setScrollTranslate(offset);
     // console.log('while dragging', offset, x, startX);
   };
 
   const shiftLeft = () => {
-    if (getM41() * -1 > scrollWidth / 2 + paddingOffset * 2) {
+    if (getM41() * -1 > scroller.scrollWidth / 2 + paddingOffset * 2) {
       return setScrollTranslate(
-        getM41() + scrollWidth / 2 - animationSpeed + paddingOffset,
+        getM41() + scroller.scrollWidth / 2 - animationSpeed + paddingOffset,
       );
     }
     setScrollTranslate(getM41() - animationSpeed);
@@ -211,7 +210,7 @@ export function Animation(
  * Called to update the scroll location
  */
 // const animate = () => {
-//   if (scroller.scrollLeft !== scrollWidth) {
+//   if (scroller.scrollLeft !== scroller.scrollWidth) {
 //     scroller.scrollTo({
 //       left: scroller.scrollLeft + animationSpeed / window.devicePixelRatio,
 //       behavior: 'instant',
@@ -224,10 +223,10 @@ export function Animation(
  */
 // const listen = () => {
 //   scroller.addEventListener('scroll', () => {
-//     if (scroller.scrollLeft >= scrollWidth / 5) {
+//     if (scroller.scrollLeft >= scroller.scrollWidth / 5) {
 //       return scroller.scrollTo(
 //         // scroller.scrollLeft - trueHalfway + threshold,
-//         scroller.scrollLeft - scrollWidth / 5,
+//         scroller.scrollLeft - scroller.scroller.scrollWidth / 5,
 //         0,
 //       );
 //     }
