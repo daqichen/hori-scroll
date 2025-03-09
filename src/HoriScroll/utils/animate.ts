@@ -16,7 +16,7 @@ export function Animation(
   styleTokens: HoriScrollClass.PropsWithChildren['styles'],
   animationEnabled: boolean,
 ) {
-  const { scrollWidth } = scroller;
+  let scrollWidth = scroller.scrollWidth;
 
   /**
    * The interval id returned by setInterval
@@ -47,6 +47,7 @@ export function Animation(
     ) {
       addListeners();
       setTimeout(simulateMouse, 3000);
+      scrollWidth = scroller.scrollWidth;
     }
   };
 
