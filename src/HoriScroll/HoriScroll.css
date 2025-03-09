@@ -1,6 +1,6 @@
 .horiscroll-instance-container {
   font-family: Arial, Helvetica, sans-serif;
-  --horiscroll-container-width: 50vw;
+  --horiscroll-container-width: 80vw;
   --horiscroll-gap: 24px;
   --horiscroll-speed-duration: 20s;
   --horiscroll-button-padding: 1rem 0.5rem;

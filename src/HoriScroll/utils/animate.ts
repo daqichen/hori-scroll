@@ -45,8 +45,8 @@ export function Animation(
       animationEnabled &&
       !window.matchMedia('(prefers-reduced-motion: reduce)').matches
     ) {
-      interval = setInterval(shiftLeft, intervalTime);
       addListeners();
+      setTimeout(simulateMouse, 3000);
     }
   };
 
@@ -138,6 +138,23 @@ export function Animation(
     mouseDown = false;
   };
 
+  const simulateMouse = () => {
+    const pointerOver = new MouseEvent('pointerover', {
+      view: window,
+      bubbles: true,
+      cancelable: true,
+    });
+
+    const pointerLeave = new MouseEvent('pointerleave', {
+      view: window,
+      bubbles: true,
+      cancelable: true,
+    });
+
+    scroller.dispatchEvent(pointerOver);
+    scroller.dispatchEvent(pointerLeave);
+  };
+
   const addListeners = () => {
     scroller.addEventListener('pointermove', (e) => drag(e), { signal });
     scroller.addEventListener('pointerdown', (e) => startDragging(e), {
@@ -166,7 +183,7 @@ export function Animation(
    * Reset scroll to start
    */
   const reset = () => {
-    setScrollTranslate(0);
+    setScrollTranslate(10);
     mouseDown = false;
     startX = 0;
     scrollLeft = 0;
