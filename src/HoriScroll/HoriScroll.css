@@ -8,7 +8,7 @@
   --horiscroll-li-button-surface: #415a77;
   --horiscroll-text: white;
 
-  width: var(--horiscroll-container-width, 50vw);
+  width: var(--horiscroll-container-width, 80vw);
   background: var(--horiscroll-inner-list-bg, #023047);
   overflow-x: scroll;
 }

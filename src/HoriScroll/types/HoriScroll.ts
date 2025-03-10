@@ -7,7 +7,7 @@ import { IconName } from './material-icon-names';
 export namespace HoriScrollClass {
   export interface ListItemProps<TValue>
     extends Omit<ComponentProps<'li'>, 'onClick' | 'value'> {
-    onClick?: (value: TValue, key: Key) => void;
+    // onClick?: (value: TValue, key: Key) => void;
     value: TValue;
     materialIconName?: IconName | string;
     icon?: ReactNode;
@@ -47,6 +47,7 @@ export namespace HoriScrollClass {
       buttonBackground?: string;
       color?: string;
       gapBetweenElementsInPixels?: number;
+      containerWidth?: string;
     };
   }
 
@@ -59,10 +60,10 @@ export namespace HoriScrollClass {
      */
     isClickable?: boolean;
     options?: Array<
-      | (TValue & Key)
-      | (ListItemProps<TValue> & {
-          key: Key;
-        })
+      // | (TValue & Key)
+      ListItemProps<TValue> & {
+        key: Key;
+      }
     >;
   }
 

@@ -75,6 +75,12 @@ export function Animation(
           styleTokens.gapBetweenElementsInPixels + 'px',
         );
       }
+      if (styleTokens?.containerWidth) {
+        scroller.parentElement.style.setProperty(
+          '--horiscroll-container-width',
+          styleTokens.containerWidth,
+        );
+      }
     }
   };
 
