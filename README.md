@@ -143,6 +143,14 @@ Build the library in watch mode:
 pnpm dev
 ```
 
+Run Storybook:
+
+```bash
+pnpm storybook
+```
+
+View at `http://localhost:8000/`
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
