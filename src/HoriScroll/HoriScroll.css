@@ -49,6 +49,7 @@ Animation-related CSS
   overflow-x: hidden;
   scrollbar-width: none;
   cursor: grab;
+  touch-action: none; /* Prevents pointermove event being canceled by browser touch-action on mobile devices */
 }
 
 /* ==========================================================================
