@@ -1,5 +1,82 @@
-import React, { FC, Key } from 'react';
+import { FC, Key } from 'react';
 import { HoriScrollClass } from '../src/HoriScroll/types/HoriScroll';
+import { ArgTypes } from '@storybook/react';
+import { HoriScroll } from '../src/HoriScroll/HoriScroll';
+
+export const argTypes: Partial<ArgTypes<typeof HoriScroll>> = {
+  options: { control: 'object', description: 'Array of options to display in the horizontal scroll', table: { type: { summary: 'Array' } } },
+  onClick: { action: 'clicked', control: false }, //{ type: 'function', control: false }
+  animationSpeed: { 
+    control: 'select', 
+    options: ['SLOW', 'FAST', 'MEDIUM'], 
+    description: 'Speed of the entering animation', 
+    table: {
+      type: { summary: 'string' },
+      defaultValue: { summary: 'MEDIUM' }
+    }
+  },
+  enteringAnimationType: {
+    control: 'select',
+    options: ['none', 'scale', 'translate-up', 'translate-down'],
+    description: 'Type of entering animation',
+    table: {
+      type: { summary: 'string' },
+      defaultValue: { summary: 'none' },
+    },
+  },
+  enteringAnimationDelay: {
+    control: 'number',
+    description: 'Delay before the entering animation starts',
+    table: {
+      type: { summary: 'number' },
+      defaultValue: { summary: 100 },
+    },
+  },
+  styles: {
+    control: 'object',
+    description: 'Custom styles for the component',
+    table: {
+      type: {
+        summary: 'object',
+        detail: `
+          background: string;
+buttonBackground: string;
+color: string;
+gapBetweenElementsInPixels: number;
+containerWidth: string;
+        `,
+      },
+      defaultValue: {
+        summary: '{ background: "#023047", color: "white", buttonBackground: "#415a77", gapBetweenElementsInPixels: 24, containerWidth: "80vw" }',
+      },
+    },
+  },
+  isClickable: { 
+    control: 'boolean', 
+    table: {
+      type: { summary: 'boolean' },
+      defaultValue: { summary: false },
+    },
+    description: 'Make the options clickable'
+  },
+  blurredEdges: { 
+    control: 'boolean', 
+    table: {
+      type: { summary: 'boolean' },
+      defaultValue: { summary: false },
+    },
+    description: 'Apply blurred edges effect to the component'
+  },
+  // This is a custom prop for the component, not a native HTML attribute
+  animationEnabled: { 
+    control: 'boolean', 
+    table: {
+      type: { summary: 'boolean' },
+      defaultValue: { summary: true },
+    },
+    description: 'Enable or disable the auto-scroll animation' 
+  },
+};
 
 export const SportsOptions = [
   {
@@ -27,11 +104,7 @@ export const SportsOptions = [
     key: 'kayaking',
     materialIconName: 'kayaking',
   },
-] as Array<
-  HoriScrollClass.ListItemProps<unknown> & {
-    key: Key;
-  }
->;
+];
 
 export const FoodOptionsWithMicrosoftEmojis = [
   {
@@ -122,11 +195,7 @@ export const FoodOptionsWithMicrosoftEmojis = [
       />
     ),
   },
-] as Array<
-  HoriScrollClass.ListItemProps<unknown> & {
-    key: Key;
-  }
->;
+];
 
 export const ChildrenProp: FC = () => (
   <>

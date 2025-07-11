@@ -5,12 +5,13 @@ import { IconName } from './material-icon-names';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace HoriScrollClass {
-  export interface ListItemProps<TValue>
+  export interface ListItemProps<TValue extends number | string>
     extends Omit<ComponentProps<'li'>, 'onClick' | 'value'> {
     // onClick?: (value: TValue, key: Key) => void;
     value: TValue;
     materialIconName?: IconName | string;
     icon?: ReactNode;
+    key: Key;
   }
 
   export interface PropsWithChildren
@@ -39,6 +40,7 @@ export namespace HoriScrollClass {
       | 'scale'
       | 'translate-up'
       | 'translate-down';
+    enteringAnimationDelay?: number;
     /**
      * @prop `styles` -- different from `style` which is the native prop on HTML elements, `styles` are a set of tokens specifically set to be customizable internally
      */
@@ -51,7 +53,7 @@ export namespace HoriScrollClass {
     };
   }
 
-  export interface PropsWithOptions<TValue>
+  export interface PropsWithOptions<TValue extends number | string>
     extends Omit<PropsWithChildren, 'children'> {
     onClick?: (value: TValue, key: Key) => void;
     /**
@@ -60,16 +62,13 @@ export namespace HoriScrollClass {
      */
     isClickable?: boolean;
     options?: Array<
-      // | (TValue & Key)
-      ListItemProps<TValue> & {
-        key: Key;
-      }
+      ListItemProps<TValue>
     >;
   }
 
   export interface Type {
     (props: PropsWithChildren, ref?: Ref<HTMLDivElement>): ReactNode;
-    <TValue>(
+    <TValue extends number | string>(
       props: PropsWithOptions<TValue>,
       ref?: Ref<HTMLDivElement>,
     ): ReactNode;

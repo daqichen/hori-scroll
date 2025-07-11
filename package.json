@@ -11,7 +11,9 @@
     "react",
     "animation",
     "horizontal scroll",
-    "infinite scroll"
+    "infinite scroll",
+    "endless scroll",
+    "marquee"
   ],
   "repository": {
     "type": "git",

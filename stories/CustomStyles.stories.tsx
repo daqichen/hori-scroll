@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn, userEvent, within } from '@storybook/test';
 import { HoriScroll } from '../src/HoriScroll/HoriScroll';
-import React from 'react';
 import './HoriScroll.stories.css';
-import { FoodOptionsWithMicrosoftEmojis, SportsOptions } from './data';
+import { argTypes, FoodOptionsWithMicrosoftEmojis, SportsOptions } from './data';
+import { HoriScrollClass } from '../src/HoriScroll/types/HoriScroll';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -16,16 +16,7 @@ const meta = {
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ['autodocs'],
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
-  argTypes: {
-    options: { control: 'object' },
-    onClick: { action: 'clicked', control: false }, //{ type: 'function', control: false }
-    animationSpeed: { control: 'select', options: ['SLOW', 'FAST', 'MEDIUM'] },
-    enteringAnimationType: {
-      control: 'select',
-      options: ['none', 'scale', 'translate-up', 'translate-down'],
-    },
-    animationEnabled: { control: 'boolean' },
-  },
+  argTypes: argTypes,
   // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
   args: { onClick: fn() },
 } satisfies Meta<typeof HoriScroll>;

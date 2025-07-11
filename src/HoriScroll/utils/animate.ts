@@ -13,6 +13,7 @@ type ANIMATION_SPEED = (typeof ANIMATION_SPEED_DICT)[ANIMATION_SPEED_TYPE];
 export function Animation(
   scroller: HTMLDivElement,
   animationSpeed: ANIMATION_SPEED,
+  enteringAnimationDelay: number,
   styleTokens: HoriScrollClass.PropsWithChildren['styles'],
   animationEnabled: boolean,
 ) {
@@ -44,7 +45,7 @@ export function Animation(
       !window.matchMedia('(prefers-reduced-motion: reduce)').matches
     ) {
       addListeners();
-      setTimeout(simulateMouse, 3000);
+      setTimeout(simulateMouse, enteringAnimationDelay);
     }
   };
 

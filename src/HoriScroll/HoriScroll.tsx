@@ -20,9 +20,9 @@ import { HoriScrollClass } from './types/HoriScroll';
 
 const HoriScroll: HoriScrollClass.Type = forwardRef<
   HTMLDivElement,
-  HoriScrollClass.PropsWithChildren | HoriScrollClass.PropsWithOptions<unknown>
+  HoriScrollClass.PropsWithChildren | HoriScrollClass.PropsWithOptions<number | string>
 >(
-  <TValue,>(
+  <TValue extends number | string,>(
     props:
       | HoriScrollClass.PropsWithChildren
       | HoriScrollClass.PropsWithOptions<TValue>,
@@ -35,6 +35,7 @@ const HoriScroll: HoriScrollClass.Type = forwardRef<
       isClickable = false,
       blurredEdges = false,
       enteringAnimationType = 'none',
+      enteringAnimationDelay = 100,
       animationSpeed = 'MEDIUM',
       className,
       ...baseProps
@@ -62,6 +63,7 @@ const HoriScroll: HoriScrollClass.Type = forwardRef<
         ? Animation(
             horiscrollRef.current,
             ANIMATION_SPEED_DICT[animationSpeed],
+            enteringAnimationDelay,
             baseProps.styles,
             animationEnabled,
           )
