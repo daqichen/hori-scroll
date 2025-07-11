@@ -15,10 +15,8 @@
 </p>
  
 <p align="center">
-  <a href="https://codesandbox.io/p/devbox/boring-star-jkz2yj"><img src="https://img.shields.io/badge/Demo-CodeSandbox-black?style=for-the-badge
-  "></a>
-  <a href="https://main--67aab46a4dba4c850f9bcb99.chromatic.com/"><img src="https://img.shields.io/badge/Docs-Storybook-pink?style=for-the-badge
-  "></a>
+  <a href="https://codesandbox.io/p/devbox/boring-star-jkz2yj"><img src="https://img.shields.io/badge/Demo-CodeSandbox-black?style=for-the-badge"></a>
+  <a href="https://main--67aab46a4dba4c850f9bcb99.chromatic.com/"><img src="https://img.shields.io/badge/Docs-Storybook-pink?style=for-the-badge"></a>
 </p>
 
 Unlike a pure `CSS`-driven scroll solution, the horizontal scroll in this library is driven by `JS` + `translate` `CSS` property, therefore allows for user interference and upon user's cursor leaving the container, the scrolling animation continues infinitely.
