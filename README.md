@@ -11,8 +11,7 @@
   <a href="https://npm.im/hori-scroll"><img src="https://img.shields.io/npm/v/hori-scroll?style=flat-square" alt="NPM Version" /></a>
   <a href="https://npm.im/hori-scroll"><img src="https://img.shields.io/npm/l/hori-scroll?style=flat-square" alt="MIT License" /></a>
   <a href="https://github.com/daqichen/hori-scroll"><img src="https://img.shields.io/github/actions/workflow/status/daqichen/hori-scroll/.github%2Fworkflows%2Fchromatic.yml?branch=main&style=flat-square" alt="Build status" /></a>
-  <a href="https://github.com/daqichen/hori-scroll"><img src="https://img.shields.io/github/issues-search?query=repo%3Adaqichen%2Fhori-scroll%20is%3Aopen
-  &label=Open%20issues&style=flat-square" alt="Open issues" /></a>
+  <a href="https://github.com/daqichen/hori-scroll"><img src="https://img.shields.io/github/issues-search?query=repo%3Adaqichen%2Fhori-scroll%20is%3Aopen&label=Open%20issues&style=flat-square" alt="Open issues" /></a>
 </p>
  
 <p align="center">
