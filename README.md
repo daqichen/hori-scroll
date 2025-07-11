@@ -4,7 +4,7 @@
 <h1 align="center"><code>hori-scroll</code></h1>
 
 <p align="center">
-  endless, animated horizontal scrollingg
+  endless, animated horizontal scrolling
 </p>
 
 <p align="center">
@@ -41,7 +41,7 @@ import HoriScroll, { ANIMATION_SPEED_TYPE, HoriScrollClass } from "hori-scroll";
 ```
 ---
 
-## Options:
+## Options
 
 | Prop Name                | Type    | Options                                         | Default Value                                                                                   | Required | Description                                         |
 |--------------------------|---------|-------------------------------------------------|-----------------------------------------------------------------------------------------------|----------|-----------------------------------------------------|
@@ -58,6 +58,7 @@ import HoriScroll, { ANIMATION_SPEED_TYPE, HoriScrollClass } from "hori-scroll";
 **Note:**  
 - For `styles`, the object can include: `background`, `buttonBackground`, `color`, `gapBetweenElementsInPixels`, `containerWidth`.  
 
+## Examples
 ### Option Array `prop` (w/o passing children props)
 - `options`
   - `Array<ListItemProps<TValue extends number | string>>;` (optional)
